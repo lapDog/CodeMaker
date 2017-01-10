@@ -28,13 +28,13 @@ public class CommParseUtil {
 	        //创建配置实例 
 	        Configuration configuration = new Configuration();
 	        //设置编码
-            configuration.setDefaultEncoding("UTF-8");
+            configuration.setDefaultEncoding(CodeResourceUtil.SYSTEM_ENCODING);
             //加载模板
-            configuration.setClassForTemplateLoading(CommParseUtil.class,SystemConfig.getProperty("BasePath_TemplatePath"));
+            configuration.setClassForTemplateLoading(CommParseUtil.class,CodeResourceUtil.TEMPLATES_PATH);
             //获取模板 
             Template template = configuration.getTemplate(templateName);
             //输出文件
-            File outFile = new File(destFilePath);
+            File outFile = new File(CodeResourceUtil.CODE_OUTPUT_PATH+destFilePath);
             //如果输出目标文件夹不存在，则创建
             if (!outFile.getParentFile().exists()){
                 outFile.getParentFile().mkdirs();

@@ -1,14 +1,14 @@
-package ${bussiPackagePath}.entity.${projectName};
+package ${teamPackagePath}.${entityPackagePath}.${projectName};
 
 import java.io.Serializable;
 
 /**
- * ${className} 实体类
- * Created by CoderMaker on ${CreatedTime}.
+ * ${entityName} 实体类
+ * Created by CoderMaker on ${createdTime}.
  */ 
-public class ${className} implements Serializable {
+public class ${entityName} implements Serializable {
 	
-	${beanFeilds}
+	${entityContents}
 
 }
 
