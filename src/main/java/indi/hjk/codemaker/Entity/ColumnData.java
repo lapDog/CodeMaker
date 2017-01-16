@@ -1,5 +1,7 @@
 package indi.hjk.codemaker.Entity;
 
+
+
 /**
  * 表结构
  * Created by HJK on 2017/1/3.

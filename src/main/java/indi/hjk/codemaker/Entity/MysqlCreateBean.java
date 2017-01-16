@@ -21,7 +21,7 @@ public class MysqlCreateBean implements BaseCreateBean {
     private static List<ColumnData> ColumnsList=new ArrayList<ColumnData>();
 
     //存放模板导出数据
-    private static Map<String,String> DataMap=new HashMap<String, String>();
+    private static Map<String,Object> DataMap=new HashMap<String, Object>();
 
     /**
      * 执行代码生成
@@ -29,21 +29,20 @@ public class MysqlCreateBean implements BaseCreateBean {
     public void makeCode() {
         System.out.println("Mysql制造代码开始");
 
-        //1.初始化配置文件，获取相应变量--SystemConfig
-
-
         //2.连接数据库，获取数据库表结构
         getColumnDatas();
         //初始化数据集
         initDataMap();
         //3.生成实体类
-        CommParseUtil.ParseContent(DataMap,"EntityTemplate.ftl",DataMap.get("CP_bean"));
+        CommParseUtil.ParseContent(DataMap,"EntityTemplate.ftl",DataMap.get("CP_bean").toString());
         //4.生成DAO层(dao接口/mapper文件)
-
+        CommParseUtil.ParseContent(DataMap,"DaoTemplate.ftl",DataMap.get("CP_dao").toString());
+        CommParseUtil.ParseContent(DataMap,"MapperTemplate.ftl",DataMap.get("CP_mapper").toString());
         //5.生成Service层(service接口/实现类)
-
+        CommParseUtil.ParseContent(DataMap,"ServiceTemplate.ftl",DataMap.get("CP_service").toString());
+        CommParseUtil.ParseContent(DataMap,"ServiceImplTemplate.ftl",DataMap.get("CP_serviceimpl").toString());
         //6.生成Controller层
-
+        CommParseUtil.ParseContent(DataMap,"ControllerTemplate.ftl",DataMap.get("CP_controller").toString());
         //7.生成CURD页面
 
         System.out.println("Mysql制造代码完毕");
@@ -63,7 +62,7 @@ public class MysqlCreateBean implements BaseCreateBean {
             while (rs.next()){
                 ColumnData cd=new ColumnData();
                 cd.setColname(rs.getString(1).toLowerCase());
-                cd.setJdbctype(rs.getString(2));
+                cd.setJdbctype(rs.getString(2).toUpperCase());
                 cd.setJavatype(StringStuffUtil.transDbtypeToJavatype(rs.getString(2),"0","0"));
                 cd.setColcomment(rs.getString(3));
                 cd.setMaxLength(rs.getString(4)==null?"":rs.getString(4));
@@ -90,61 +89,18 @@ public class MysqlCreateBean implements BaseCreateBean {
         DataMap.put("codePackagePath",CodeResourceUtil.CODE_PACKAGE_PATH);
         DataMap.put("entityPackagePath",CodeResourceUtil.ENTITY_PACKAGE_PATH);
         DataMap.put("entityName",CodeResourceUtil.ENTITY_NAME);
-        DataMap.put("entityContents",getBeanFeilds());//实体类内容填充
-
+        DataMap.put("entityLowerName",CodeResourceUtil.ENTITY_NAME.toLowerCase());
+        DataMap.put("ColumnsList",ColumnsList);
+        DataMap.put("tableName",CodeResourceUtil.TABLE_NAME);
+        DataMap.put("primaryKey",CodeResourceUtil.PRIMARYKEY);
+        DataMap.put("primaryKeyType",CodeResourceUtil.PRIMARYKEY_TYPE);
         //文件写出路径(代码生成路径以后的路径)
         DataMap.put("CP_bean","entity\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+".java");
-
-
-    }
-
-    /**
-     * 拼接Bean字段及GetterAndSetter
-     * @return
-     */
-    private String getBeanFeilds(){
-        StringBuffer fields = new StringBuffer();//存放字段
-        StringBuffer getset = new StringBuffer();//存放getter and setter
-
-        for (ColumnData d : ColumnsList) {
-
-            //日期类型加上日期起始时间
-            if ("DATE".equals(d.getJdbctype().toUpperCase())||"DATETIME".equals(d.getJdbctype().toUpperCase())||"TIMESTAMP".equals(d.getJdbctype().toUpperCase())) {
-                String sname = d.getColname() + "_start";
-                String stype = "java.lang.String";
-                String scomment = d.getColcomment() + "_开始时间";
-                String ename = d.getColname() + "_end";
-                String etype = "java.lang.String";
-                String ecomment = d.getColcomment() + "_结束时间";
-                // starttime getter and setter
-                fields.append("\r\t").append("private ").append(stype + " ").append(sname).append(";//   ").append(scomment);
-                String smethod = CamelCaseUtil.toCapitalizeCamelCase(sname);
-                getset.append("\r\t").append("public ").append(stype + " ").append("get" + smethod + "() {\r\t");
-                getset.append("    return this.").append(sname).append(";\r\t}");
-                getset.append("\r\t").append("public void ").append("set" + smethod + "(" + stype + " " + sname + ") {\r\t");
-                getset.append("    this." + sname + "=").append(sname).append(";\r\t}");
-                // endtime getter and setter
-                fields.append("\r\t").append("private ").append(etype + " ").append(ename).append(";//   ").append(ecomment);
-                String emethod = CamelCaseUtil.toCapitalizeCamelCase(ename);
-                getset.append("\r\t").append("public ").append(etype + " ").append("get" + emethod + "() {\r\t");
-                getset.append("    return this.").append(ename).append(";\r\t}");
-                getset.append("\r\t").append("public void ").append("set" + emethod + "(" + etype + " " + ename + ") {\r\t");
-                getset.append("    this." + ename + "=").append(ename).append(";\r\t}");
-
-            }else{
-                //fields
-                fields.append("\r\t").append("private ").append(d.getJavatype() + " ").append(d.getColname()).append(";//   ").append(d.getColcomment());
-                //getter拼接
-                String colMethodName=CamelCaseUtil.toCapitalizeCamelCase(d.getColname());
-                getset.append("\r\t").append("public ").append(d.getJavatype() + " ").append("get" + colMethodName + "() {\r\t");
-                getset.append("    return this.").append(d.getColname()).append(";\r\t}");
-                //setter拼接
-                getset.append("\r\t").append("public void ").append("set" + colMethodName + "(" + d.getJavatype() + " " + d.getColname() + ") {\r\t");
-                getset.append("    this." + d.getColname() + "=").append(d.getColname()).append(";\r\t}");
-            }
-
-        }
-       return fields.toString()+getset.toString();
+        DataMap.put("CP_dao","dao\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Mapper.java");
+        DataMap.put("CP_mapper","mapper\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Mapper.xml");
+        DataMap.put("CP_service","service\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Service.java");
+        DataMap.put("CP_serviceimpl","service\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"ServiceImpl.java");
+        DataMap.put("CP_controller","controller\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Controller.java");
 
     }
 
