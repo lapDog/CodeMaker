@@ -19,18 +19,19 @@ public class CommParseUtil {
 	
 	/**
 	 * 替换并创建文档
+     * @param type 生成文件类型:0类及接口等，1页面
 	 * @param data 填充数据集合
 	 * @param templateName 模板名称
 	 * @param destFilePath 文件生成路径
 	 */
-	public static void ParseContent(Map data,String templateName,String destFilePath){
+	public static void ParseContent(int type,Map data,String templateName,String destFilePath){
         try {
 	        //创建配置实例 
 	        Configuration configuration = new Configuration();
 	        //设置编码
             configuration.setDefaultEncoding(CodeResourceUtil.SYSTEM_ENCODING);
             //加载模板
-            configuration.setClassForTemplateLoading(CommParseUtil.class,CodeResourceUtil.TEMPLATES_PATH);
+            configuration.setClassForTemplateLoading(CommParseUtil.class,type==0?CodeResourceUtil.TEMPLATES_PATH:CodeResourceUtil.VIEWTEMPLATES_PATH);
             //获取模板 
             Template template = configuration.getTemplate(templateName);
             //输出文件

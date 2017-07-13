@@ -7,12 +7,13 @@ package indi.hjk.codemaker.Entity;
  * Created by HJK on 2017/1/3.
  */
 public class ColumnData {
-    private String colname;
-    private String jdbctype;
-    private String javatype;
-    private String colcomment;
-    private String maxLength;
-    private String nullable;
+    private String colname; //列名
+    private String jdbctype; //数据库字段类型
+    private String javatype; //对应java类型
+    private String mappertype; //mapper文件字段对应类型
+    private String colcomment; //列名注释
+    private String maxLength; //最大长度
+    private String nullable;  //是否为空
 
     public String getJavatype() {
         return javatype;
@@ -60,5 +61,13 @@ public class ColumnData {
 
     public void setNullable(String nullable) {
         this.nullable = nullable;
+    }
+
+    public String getMappertype() {
+        return mappertype;
+    }
+
+    public void setMappertype(String mappertype) {
+        this.mappertype = mappertype;
     }
 }

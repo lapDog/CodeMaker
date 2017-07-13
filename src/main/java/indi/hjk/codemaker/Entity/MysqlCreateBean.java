@@ -34,16 +34,22 @@ public class MysqlCreateBean implements BaseCreateBean {
         //初始化数据集
         initDataMap();
         //3.生成实体类
-        CommParseUtil.ParseContent(DataMap,"EntityTemplate.ftl",DataMap.get("CP_bean").toString());
+        CommParseUtil.ParseContent(0,DataMap,"EntityTemplate.ftl",DataMap.get("CP_bean").toString());
         //4.生成DAO层(dao接口/mapper文件)
-        CommParseUtil.ParseContent(DataMap,"DaoTemplate.ftl",DataMap.get("CP_dao").toString());
-        CommParseUtil.ParseContent(DataMap,"MapperTemplate.ftl",DataMap.get("CP_mapper").toString());
+        CommParseUtil.ParseContent(0,DataMap,"DaoTemplate.ftl",DataMap.get("CP_dao").toString());
+        CommParseUtil.ParseContent(0,DataMap,"MapperTemplate.ftl",DataMap.get("CP_mapper").toString());
         //5.生成Service层(service接口/实现类)
-        CommParseUtil.ParseContent(DataMap,"ServiceTemplate.ftl",DataMap.get("CP_service").toString());
-        CommParseUtil.ParseContent(DataMap,"ServiceImplTemplate.ftl",DataMap.get("CP_serviceimpl").toString());
+        CommParseUtil.ParseContent(0,DataMap,"ServiceTemplate.ftl",DataMap.get("CP_service").toString());
+        CommParseUtil.ParseContent(0,DataMap,"ServiceImplTemplate.ftl",DataMap.get("CP_serviceimpl").toString());
         //6.生成Controller层
-        CommParseUtil.ParseContent(DataMap,"ControllerTemplate.ftl",DataMap.get("CP_controller").toString());
+        CommParseUtil.ParseContent(0,DataMap,"ControllerTemplate.ftl",DataMap.get("CP_controller").toString());
         //7.生成CURD页面
+        CommParseUtil.ParseContent(1,DataMap,"list.ftl",DataMap.get("CP_listview").toString());
+        CommParseUtil.ParseContent(1,DataMap,"add.ftl",DataMap.get("CP_addview").toString());
+        CommParseUtil.ParseContent(1,DataMap,"edit.ftl",DataMap.get("CP_editview").toString());
+        CommParseUtil.ParseContent(1,DataMap,"view.ftl",DataMap.get("CP_view").toString());
+
+
 
         System.out.println("Mysql制造代码完毕");
     }
@@ -94,6 +100,7 @@ public class MysqlCreateBean implements BaseCreateBean {
         DataMap.put("tableName",CodeResourceUtil.TABLE_NAME);
         DataMap.put("primaryKey",CodeResourceUtil.PRIMARYKEY);
         DataMap.put("primaryKeyType",CodeResourceUtil.PRIMARYKEY_TYPE);
+        DataMap.put("entityNickname",CodeResourceUtil.ENTITY_NICKNAME);
         //文件写出路径(代码生成路径以后的路径)
         DataMap.put("CP_bean","entity\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+".java");
         DataMap.put("CP_dao","dao\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Mapper.java");
@@ -101,6 +108,12 @@ public class MysqlCreateBean implements BaseCreateBean {
         DataMap.put("CP_service","service\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Service.java");
         DataMap.put("CP_serviceimpl","service\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"ServiceImpl.java");
         DataMap.put("CP_controller","controller\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Controller.java");
+        //页面生成路径
+        DataMap.put("CP_listview","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"list.jsp");
+        DataMap.put("CP_addview","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"add.jsp");
+        DataMap.put("CP_view","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"view.jsp");
+        DataMap.put("CP_editview","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"edit.jsp");
+
 
     }
 

@@ -18,38 +18,38 @@ public class StringStuffUtil {
     public static String transDbtypeToJavatype(String dataType, String precision, String scale) {
         dataType = dataType.toLowerCase();
         if (dataType.contains("char"))
-            dataType = "java.lang.String";
+            dataType = "String";
         else if (dataType.contains("int"))
-            dataType = "java.lang.Integer";
+            dataType = "Integer";
         else if (dataType.contains("float"))
-            dataType = "java.lang.Float";
+            dataType = "Float";
         else if (dataType.contains("double"))
-            dataType = "java.lang.Double";
+            dataType = "Double";
         else if (dataType.contains("number")) {
             if ((StringUtils.isNotBlank(scale))
                     && (Integer.parseInt(scale) > 0))
-                dataType = "java.math.BigDecimal";
+                dataType = "BigDecimal";
             else if ((StringUtils.isNotBlank(precision))
                     && (Integer.parseInt(precision) > 6))
-                dataType = "java.lang.Long";
+                dataType = "Long";
             else
-                dataType = "java.lang.Double";
+                dataType = "Double";
         } else if (dataType.contains("decimal"))
             dataType = "BigDecimal";
         else if (dataType.contains("date"))
-            dataType = "java.util.Date";
+            dataType = "Date";
         else if (dataType.contains("time"))
-            dataType = "java.sql.Timestamp";
+            dataType = "Timestamp";
         else if (dataType.contains("clob"))
-            dataType = "java.sql.Clob";
+            dataType = "Clob";
         else if (dataType.contains("blob"))
-            dataType = "java.sql.Blob";
+            dataType = "Blob";
         else if (dataType.contains("varchar"))
-            dataType = "java.lang.String";
+            dataType = "String";
         else if (dataType.contains("integer"))
-            dataType = "java.lang.Integer";
+            dataType = "Integer";
         else {
-            dataType = "java.lang.Object";
+            dataType = "Object";
         }
         return dataType;
     }

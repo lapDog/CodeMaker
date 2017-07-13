@@ -1,6 +1,7 @@
 package indi.hjk.codemaker.Utils;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.ResourceBundle;
 
 /**
@@ -36,6 +37,8 @@ public class CodeResourceUtil {
     public static String ENTITY_PACKAGE_PATH="entity";
     //模板路径
     public static String TEMPLATES_PATH="templates/default/";
+    //页面模板路径
+    public static String VIEWTEMPLATES_PATH="viewtemplates/hplus/";
     //统一编码格式
     public static String SYSTEM_ENCODING="utf-8";
     //web根路径名
@@ -72,6 +75,8 @@ public class CodeResourceUtil {
     public static String PRIMARYKEY_TYPE="1";
     //生成实体类名称
     public static String ENTITY_NAME="DeviceInfo";
+    //生成实体类名称
+    public static String ENTITY_NICKNAME="设备信息";
 
     /*初始化变量*/
     static {
@@ -86,6 +91,7 @@ public class CodeResourceUtil {
         CODE_PACKAGE_PATH=getCodePackagePath();
         ENTITY_PACKAGE_PATH=getEntityPackagePath();
         TEMPLATES_PATH=getTemplatesPath();
+        VIEWTEMPLATES_PATH=getViewtemplatesPath();
         SYSTEM_ENCODING=getSystemEncoding();
         WEBROOT_PATH=getWebrootPath();
         CODE_OUTPUT_PATH=getCodeOutputPath();
@@ -95,6 +101,7 @@ public class CodeResourceUtil {
         PRIMARYKEY=getPRIMARYKEY();
         PRIMARYKEY_TYPE=getPrimarykeyType();
         ENTITY_NAME=getEntityName();
+        ENTITY_NICKNAME=getEntityNickname();
         TEAM_PACKAGE_REPATH=TEAM_PACKAGE_PATH.replace(".","/");
         CODE_PACKAGE_REPATH=CODE_PACKAGE_PATH.replace(".","/");
 
@@ -187,5 +194,13 @@ public class CodeResourceUtil {
 
     public static String getEntityName() {
         return confbundle.getString("ENTITY_NAME");
+    }
+
+    public static String getViewtemplatesPath() {
+        return confbundle.getString("VIEWTEMPLATES_PATH");
+    }
+
+    public static String getEntityNickname() {
+        return confbundle.getString("ENTITY_NICKNAME");
     }
 }
