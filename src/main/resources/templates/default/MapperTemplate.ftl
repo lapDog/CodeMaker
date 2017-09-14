@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${teamPackagePath}.repository.${projectName}.${entityName}Mapper" >
+<mapper namespace="${teamPackagePath}.${projectName}.dao.${entityName}Mapper" >
 <!-- Mapping relation, table field, query condition and Sql block start. -->
 	<!-- Result Map-->
-	<resultMap id="BaseResultMap" type="${teamPackagePath}.entity.${projectName}.${entityName}" >
+	<resultMap id="BaseResultMap" type="${teamPackagePath}.${projectName}.entity.${entityName}" >
+	<!-- TODO fix Date or Datetime type transt to Timestamp; need fix int to integer-->
 	<#list ColumnsList as item>
 		<result column="${item.colname}" property="${item.colname}" jdbcType="${item.jdbctype}"/>
 	</#list>
@@ -24,10 +25,10 @@
 		<#assign DateTypeList = ["DATETIME", "DATE", "TIMESTAMP"]/>
 		<#if DateTypeList?seq_contains("${item.jdbctype}")>
             <if test="${item.colname}_start != null and ${item.colname}_start != ''">
-                <![CDATA[ and ${item.colname} >= to_date(${item.colname}_start,'yyyy/mm/dd hh24:mi:ss')  ]]>
+                <![CDATA[ and ${item.colname} >= <#noparse>#{</#noparse>${item.colname}_start}  ]]>
             </if>
 			<if test="${item.colname}_end != null and ${item.colname}_end != ''">
-            	<![CDATA[ and ${item.colname} <= to_date(${item.colname}_end,'yyyy/mm/dd hh24:mi:ss')  ]]>
+            	<![CDATA[ and ${item.colname} <= <#noparse>#{</#noparse>${item.colname}_end}  ]]>
         	</if>
 		<#else>
             <if test="${item.colname} != null and ${item.colname} != ''">

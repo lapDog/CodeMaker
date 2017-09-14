@@ -80,6 +80,13 @@
             });
         }
 
+        //精确查询
+        function queryDataByCondition() {
+            $("#table_list_1").jqGrid('setGridParam',{
+                postData: getPostData("form_query")//发送数据
+            }).trigger("reloadGrid"); //重新载入
+        }
+
         //弹出新增页
         function showAdd() {
             layer.open({

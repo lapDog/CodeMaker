@@ -1,7 +1,7 @@
 package ${teamPackagePath}.services.${projectName};
 import java.util.List;
 
-import ${teamPackagePath}.${entityPackagePath}.${projectName}.${entityName};
+import ${teamPackagePath}.${projectName}.${entityPackagePath}.${entityName};
 
 /**
  * ${entityName} Service Interface

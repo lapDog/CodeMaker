@@ -1,15 +1,13 @@
-package ${teamPackagePath}.repository.${projectName};
+package ${teamPackagePath}.${projectName}.dao;
 
 import java.util.List;
 import org.apache.ibatis.session.RowBounds;
-import ${teamPackagePath}.${entityPackagePath}.${projectName}.${entityName};
-import ${teamPackagePath}.repository.MyBatisRepository;
+import ${teamPackagePath}.${projectName}.${entityPackagePath}.${entityName};
 
 /**
 * ${entityName} Mapper
 * Created by CoderMaker on ${createdTime}.
 */
-@MyBatisRepository
 public interface ${entityName}Mapper {
 
 	/**

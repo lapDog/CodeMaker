@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.run.controller.BaseController;
-import ${teamPackagePath}.entity.${projectName}.${entityName};
-import ${teamPackagePath}.service.${projectName}.${entityName}Service;
-import com.run.util.UUIDGenerator;
-import com.run.entity.common.PageBean;
-import com.run.util.JsonUtil;
+import ${teamPackagePath}.${projectName}.controller.BaseController;
+import ${teamPackagePath}.${projectName}.entity.${entityName};
+import ${teamPackagePath}.${projectName}.service.${entityName}Service;
+import ${teamPackagePath}.${projectName}.entity.common.PageBean;
+import ${teamPackagePath}.${projectName}.utils.JsonUtil;
 
 /**
   * ${entityName} Controller
@@ -101,7 +100,7 @@ public class ${entityName}Controller extends BaseController{
 		List<${entityName}> ${entityLowerName}List = ${entityLowerName}Service.query${entityName}ListByCondition(${entityLowerName});
 		page.setRows(${entityLowerName}List);
 		logger.info("查询${entityName}列表结束");
-		return JsonUtil.toJson(page);
+		return JsonUtil.toJSONString(page);
 	}
 	
 	/**
@@ -126,9 +125,9 @@ public class ${entityName}Controller extends BaseController{
 			${entityLowerName}Service.add${entityName}(${entityLowerName});
 			logger.info("${entityName}添加处理结束");
 		} catch (Exception e) {
-			return JsonUtil.toJson(new Result(false,"add operation fail.",""));
+			return JsonUtil.toJSONString(new Result(false,"add operation fail.",""));
 		}
-		return JsonUtil.toJson(new Result(true,"",""));
+		return JsonUtil.toJSONString(new Result(true,"",""));
 	}
 
 	/**
@@ -156,9 +155,9 @@ public class ${entityName}Controller extends BaseController{
 			logger.info("${entityName}修改处理结束");
 		}catch (Exception e) {
 			e.printStackTrace();
-			return JsonUtil.toJson(new Result(false,"edit operation fail.",""));
+			return JsonUtil.toJSONString(new Result(false,"edit operation fail.",""));
 		}
-		return JsonUtil.toJson(new Result(true,"",""));
+		return JsonUtil.toJSONString(new Result(true,"",""));
 	}
 
 	/**
@@ -185,9 +184,9 @@ public class ${entityName}Controller extends BaseController{
 			logger.info("${entityName}删除处理结束");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JsonUtil.toJson(new Result(false,"delete operation fail.",""));
+			return JsonUtil.toJSONString(new Result(false,"delete operation fail.",""));
 		}
-		return JsonUtil.toJson(new Result(true,"",""));
+		return JsonUtil.toJSONString(new Result(true,"",""));
 	}
 	
 }

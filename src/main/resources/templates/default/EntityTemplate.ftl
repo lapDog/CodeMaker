@@ -1,4 +1,4 @@
-package ${teamPackagePath}.${entityPackagePath}.${projectName};
+package ${teamPackagePath}.${projectName}.${entityPackagePath};
 
 import java.io.Serializable;
 

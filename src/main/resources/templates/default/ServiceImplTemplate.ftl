@@ -4,9 +4,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import ${teamPackagePath}.services.${projectName}.${entityName}Service;
-import ${teamPackagePath}.repository.${projectName}.${entityName}Mapper;
-import ${teamPackagePath}.entity.${projectName}.${entityName};
+import ${teamPackagePath}.${projectName}.services.${entityName}Service;
+import ${teamPackagePath}.${projectName}.dao.${entityName}Mapper;
+import ${teamPackagePath}.${projectName}.entity.${entityName};
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

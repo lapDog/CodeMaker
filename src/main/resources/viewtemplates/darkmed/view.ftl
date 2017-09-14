@@ -8,6 +8,7 @@
 <html>
 <head>
     <title>${entityNickname}详情</title>
+
 </head>
 <body>
     <div class="content--boxed-sm">
