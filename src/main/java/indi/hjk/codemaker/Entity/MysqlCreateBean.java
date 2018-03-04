@@ -45,11 +45,12 @@ public class MysqlCreateBean implements BaseCreateBean {
         CommParseUtil.ParseContent(0,DataMap,"ControllerTemplate.ftl",DataMap.get("CP_controller").toString());
         //7.生成CURD页面
         CommParseUtil.ParseContent(1,DataMap,"list.ftl",DataMap.get("CP_listview").toString());
-        CommParseUtil.ParseContent(1,DataMap,"add.ftl",DataMap.get("CP_addview").toString());
+       /* CommParseUtil.ParseContent(1,DataMap,"add.ftl",DataMap.get("CP_addview").toString());
         CommParseUtil.ParseContent(1,DataMap,"edit.ftl",DataMap.get("CP_editview").toString());
-        CommParseUtil.ParseContent(1,DataMap,"view.ftl",DataMap.get("CP_view").toString());
+        CommParseUtil.ParseContent(1,DataMap,"view.ftl",DataMap.get("CP_view").toString());*/
 
-
+        //JOOQ CURD类
+        CommParseUtil.ParseContent(0,DataMap,"RepositoryTemplate.ftl",DataMap.get("CP_Repository").toString());
 
         System.out.println("Mysql制造代码完毕");
     }
@@ -114,7 +115,7 @@ public class MysqlCreateBean implements BaseCreateBean {
         DataMap.put("CP_view","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"view.jsp");
         DataMap.put("CP_editview","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"edit.jsp");
 
-
+        DataMap.put("CP_Repository","repository\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Repository.java");
     }
 
 }

@@ -129,10 +129,10 @@
 		<include refid="Base_Column_List"></include>
 		from ${tableName}
 		<include refid="Example_Where_Clause"></include>
-		<!-- Pagination StartIndex and EndIndex -->
-        <if test="startIndex != null and startIndex != '' and endIndex != null and endIndex != ''">
-             <#noparse>limit ${startIndex},${endIndex}</#noparse>
+        <#noparse><if test="sidx != null and sidx != ''">
+            order by ${sidx} ${sord}
         </if>
+        limit #{startIndex},#{rows}</#noparse>
 	</select>
 
 	<!-- Query Data List By Condition (NoPagination) -->
