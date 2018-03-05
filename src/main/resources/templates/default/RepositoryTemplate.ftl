@@ -138,14 +138,14 @@ public class ${entityName}Repository {
     private Condition queryCondition(${entityName} ${entityLowerName}){
         Condition condition = DSL.trueCondition(); //equals where 1=1
 <#list ColumnsList as item>
-	<#if item.jdbctype == 'TIMESTAMP'>
+	<#if item.javatype == 'Timestamp'>
 		if(!Strings.isNullOrEmpty(${entityLowerName}.get${item.colname?cap_first}_start())){
 			condition = condition.and(${tableName?upper_case}.${item.colname?upper_case}.ge(Timestamp.valueOf(${entityLowerName}.get${item.colname?cap_first}_start())));
 		}
 		if(!Strings.isNullOrEmpty(${entityLowerName}.get${item.colname?cap_first}_end())){
 			condition = condition.and(${tableName?upper_case}.${item.colname?upper_case}.le(Timestamp.valueOf(${entityLowerName}.get${item.colname?cap_first}_end())));
 		}
-	<#elseif item.jdbctype == 'STRING'>
+	<#elseif item.javatype == 'String'>
 		if(!Strings.isNullOrEmpty(${entityLowerName}.get${item.colname?cap_first}())){
 			condition = condition.and(${tableName?upper_case}.${item.colname?upper_case}.containsIgnoreCase(${entityLowerName}.get${item.colname?cap_first}()));
 		}
@@ -166,7 +166,7 @@ public class ${entityName}Repository {
     private Map<Field<?>,Object> setValueEmptyClause(${entityName} ${entityLowerName}){
         Map<Field<?>,Object> map= Maps.newHashMap();
 <#list ColumnsList as item>
-	<#if item.jdbctype == 'STRING'>
+	<#if item.javatype == 'String'>
 		if(!Strings.isNullOrEmpty(${entityLowerName}.get${item.colname?cap_first}())){
 			map.put(${tableName?upper_case}.${item.colname?upper_case},${entityLowerName}.get${item.colname?cap_first}());
 		}
