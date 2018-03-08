@@ -11,12 +11,12 @@ import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ${teamPackagePath}.${projectName}.${entityPackagePath}.${entityName};
 
 /**
 * ${entityName} Repository with JOOQ
 * Created by CoderMaker on ${createdTime}.
 */
+@Repository
 public class ${entityName}Repository {
 
 	<#noparse>
@@ -31,12 +31,12 @@ public class ${entityName}Repository {
 	 * @param ${entityLowerName}
      * @return Data mapping entity list
 	 */
-	public List<${entityName}> query${entityName}ListByCondition(${entityName} ${entityLowerName}){
+	public List<${entityExtendName}> query${entityName}ListByCondition(${entityExtendName} ${entityLowerName}){
 		return create.select(getBaseColumnList()).from(${tableName?upper_case})
 				.where(queryCondition(${entityLowerName}))
 				.limit(${entityLowerName}.getRows())
 				.offset(${entityLowerName}.getStartIndex())
-				.fetchInto(${entityName}.class);
+				.fetchInto(${entityExtendName}.class);
 	}
 
 	/**
@@ -45,10 +45,10 @@ public class ${entityName}Repository {
      * @param ${entityLowerName}
      * @return Data mapping entity list
 	 */
-	public List<${entityName}> query${entityName}ListByConditionNoPage(${entityName} ${entityLowerName}){
+	public List<${entityExtendName}> query${entityName}ListByConditionNoPage(${entityExtendName} ${entityLowerName}){
 		return create.select(getBaseColumnList()).from(${tableName?upper_case})
 				.where(queryCondition(${entityLowerName}))
-				.fetchInto(${entityName}.class);
+				.fetchInto(${entityExtendName}.class);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class ${entityName}Repository {
      * @param ${entityLowerName}
      * @return Total Data
 	 */
-	public Integer query${entityName}NumByCondition(${entityName} ${entityLowerName}){
+	public Integer query${entityName}NumByCondition(${entityExtendName} ${entityLowerName}){
 		return create.fetchCount(${tableName?upper_case},queryCondition(${entityLowerName}));
 	}
 
@@ -66,7 +66,7 @@ public class ${entityName}Repository {
 	 * Add data based on entity class attributes.
 	 * @param ${entityLowerName}
 	 */
-	public void add${entityName}(${entityName} ${entityLowerName}){
+	public void add${entityName}(${entityExtendName} ${entityLowerName}){
 		create.insertInto(${tableName?upper_case}).columns(getBaseColumnList())
                 .values(
 				<#list ColumnsList as item>
@@ -90,9 +90,9 @@ public class ${entityName}Repository {
 	 * @param id  PrimaryKey
 	 * @return Data mapping entity
 	 */
-	public ${entityName} get${entityName}(Integer id){
+	public ${entityExtendName} get${entityName}(Integer id){
 		return create.select(getBaseColumnList()).from(${tableName?upper_case})
-                .where(${tableName?upper_case}.ID.eq(id)).fetchOneInto(${entityName}.class);
+                .where(${tableName?upper_case}.ID.eq(id)).fetchOneInto(${entityExtendName}.class);
 	}
 
 	/**
@@ -100,8 +100,8 @@ public class ${entityName}Repository {
 	 * Modify data based on entity class attributes.
 	 * @param ${entityLowerName}
 	 */
-	public void edit${entityName}(${entityName} ${entityLowerName}){
-		 create.update(${tableName?upper_case}).set(setValueEmptyClause(${entityLowerName})).execute();
+	public void edit${entityName}(${entityExtendName} ${entityLowerName}){
+		 create.update(${tableName?upper_case}).set(setValueEmptyClause(${entityLowerName})).where(${tableName?upper_case}.ID.eq(${entityLowerName}.getId())).execute();
 	}
 
 	/**
@@ -109,8 +109,8 @@ public class ${entityName}Repository {
 	 * Querying all data.
 	 * @return Data mapping entity list
 	 */
-	public List<${entityName}> queryAll${entityName}(){
-		return create.select(getBaseColumnList()).from(${tableName?upper_case}).fetchInto(${entityName}.class);
+	public List<${entityExtendName}> queryAll${entityName}(){
+		return create.select(getBaseColumnList()).from(${tableName?upper_case}).fetchInto(${entityExtendName}.class);
 	}
 	//endregion
 
@@ -135,10 +135,10 @@ public class ${entityName}Repository {
      * @param ${entityLowerName}
      * @return
      */
-    private Condition queryCondition(${entityName} ${entityLowerName}){
+    private Condition queryCondition(${entityExtendName} ${entityLowerName}){
         Condition condition = DSL.trueCondition(); //equals where 1=1
 <#list ColumnsList as item>
-	<#if item.javatype == 'Timestamp'>
+	<#if item.javatype == 'Timestamp'||item.javatype == 'Date'>
 		if(!Strings.isNullOrEmpty(${entityLowerName}.get${item.colname?cap_first}_start())){
 			condition = condition.and(${tableName?upper_case}.${item.colname?upper_case}.ge(Timestamp.valueOf(${entityLowerName}.get${item.colname?cap_first}_start())));
 		}
@@ -163,7 +163,7 @@ public class ${entityName}Repository {
      * @param ${entityLowerName}
      * @return
      */
-    private Map<Field<?>,Object> setValueEmptyClause(${entityName} ${entityLowerName}){
+    private Map<Field<?>,Object> setValueEmptyClause(${entityExtendName} ${entityLowerName}){
         Map<Field<?>,Object> map= Maps.newHashMap();
 <#list ColumnsList as item>
 	<#if item.javatype == 'String'>

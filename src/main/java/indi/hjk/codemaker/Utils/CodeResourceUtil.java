@@ -75,6 +75,8 @@ public class CodeResourceUtil {
     public static String PRIMARYKEY_TYPE="1";
     //生成实体类名称
     public static String ENTITY_NAME="DeviceInfo";
+    //实体类继承表单类
+    public static String ENTITY_EXTEND_NAME="DeviceInfoForm";
     //生成实体类名称
     public static String ENTITY_NICKNAME="设备信息";
 
@@ -101,6 +103,7 @@ public class CodeResourceUtil {
         PRIMARYKEY=getPRIMARYKEY();
         PRIMARYKEY_TYPE=getPrimarykeyType();
         ENTITY_NAME=getEntityName();
+        ENTITY_EXTEND_NAME=getEntityExtendName();
         ENTITY_NICKNAME=getEntityNickname();
         TEAM_PACKAGE_REPATH=TEAM_PACKAGE_PATH.replace(".","/");
         CODE_PACKAGE_REPATH=CODE_PACKAGE_PATH.replace(".","/");
@@ -194,6 +197,10 @@ public class CodeResourceUtil {
 
     public static String getEntityName() {
         return confbundle.getString("ENTITY_NAME");
+    }
+
+    public static String getEntityExtendName() {
+        return confbundle.getString("ENTITY_EXTEND_NAME");
     }
 
     public static String getViewtemplatesPath() {
