@@ -4,11 +4,31 @@
     <script>
         $(document).ready(function () {
             loadGridData();
+
+            $("#form_query").validate({
+                submitHandler:function(form){
+                    queryDataByCondition();
+
+                },rules: {
+                <#list ColumnsList as item>
+                    <#if item.javatype=="Integer">
+                        ${item.colname}:{
+                            number:true
+                        }
+                    <#else>
+                        ${item.colname}:{
+                            maxlength:50
+                        }</#if><#sep>,</#sep>
+                </#list>
+                }
+            });
+
         });
 
+        //region 加载数据及CURD
         //jqgrid数据填充绑定
         function loadGridData() {
-      <#noparse>$("#table_list_1").jqGrid({
+            <#noparse>$("#table_list_1").jqGrid({
                 url:"${acp.contextPath}/</#noparse>${entityName?lower_case}/loadList",
                 mtype : "POST",
                 postData: getPostData(),
@@ -20,7 +40,8 @@
                 },
                 height: 400,
                 autowidth: true,
-                shrinkToFit: true,
+                rownumbers:true,
+                shrinkToFit: false,
                 rowNum : 10,
                 rowList: [10, 20, 30],
                 colNames: [
@@ -49,6 +70,7 @@
                     {
                         align: "center",
                         width : 250,
+                        hidedlg:true,
                         formatter : function( value, options, rows) {
                             var htmlStr = '<input type="button" class="btn btn-xs btn-primary" onclick="showDetail(\'' + rows.${primaryKey} + '\');"  value="详情">&nbsp;';
                             htmlStr += '<input type="button" class="btn btn-xs btn-info" onclick="showEdit(\'' + rows.${primaryKey} + '\');"  value="修改">&nbsp;';
@@ -60,7 +82,28 @@
                 viewrecords: true,
                 hidegrid: false
             });
+            // We need to have a navigation bar in order to add custom buttons to it
+            $("#table_list_1").navGrid('#pager_list_1', {
+                edit: false,
+                add: false,
+                del: false,
+                search: false,
+                refresh: true,
+                view: false,
+                position: "left",
+                cloneToTop: true });
 
+            // add first custom button
+            $("#table_list_1").navButtonAdd('#pager_list_1', {
+                buttonicon: "ui-icon-calculator",
+                title: "选择显示列",
+                caption: "选择列",
+                position: "last",
+                onClickButton: function() {
+                    // call the column chooser method
+                    $("#table_list_1").jqGrid('setColumns',{TableWidth:$('.jqGrid_wrapper').width(),height:417,dataheight:320});
+                }
+            });
             // Add responsive to jqGrid
             $(window).bind('resize', function () {
                 var width = $('.jqGrid_wrapper').width();
@@ -71,7 +114,8 @@
         //精确查询
         function queryDataByCondition() {
             $("#table_list_1").jqGrid('setGridParam',{
-                postData: getPostData("form_query")//发送数据
+                postData: getPostData("form_query"),
+                page:1
             }).trigger("reloadGrid"); //重新载入
         }
 
@@ -86,7 +130,7 @@
                 shadeClose : true,
                 content : <#noparse>"${acp.contextPath}/</#noparse>${entityName?lower_case}/add",
                 end : function() {
-
+                    queryDataByCondition();
                 }
             });
         }
@@ -118,7 +162,7 @@
                 shadeClose : true,
                 content : <#noparse>"${acp.contextPath}/</#noparse>${entityName?lower_case}/edit/"+id,
                 end : function() {
-
+                    queryDataByCondition();
                 }
             });
         }
@@ -137,8 +181,7 @@
                             time:1000,
                             skin: 'layer-ext-moon', //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
                             end:function () {
-                                //TODO 刷新表格数据
-
+                                queryDataByCondition();
                             }
                         });
                     }
@@ -148,6 +191,7 @@
                 //取消操作
             });
         }
+        //endregion
 
     </script>
 </head>
@@ -210,7 +254,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">${item.colcomment}</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="${item.colname}" name="${item.colname}"/>
+                                                <input type="text" class="form-control" id="${item.colname}" name="${item.colname}" placeholder="请输入${item.colcomment}模糊匹配"/>
                                             </div>
                                         </div>
                                     </div>
@@ -226,7 +270,7 @@
                                     <div class="form-horizontal">
                                         <div class="form-group">
                                             <div class="col-sm-12 text-center">
-                                                <input type="button" id="table_list_1_submit" class="btn btn-sm btn-primary" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="submit" class="btn btn-sm btn-primary" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <input type="reset" class="btn btn-sm btn-white ppd" value="重置" />
                                             </div>
                                         </div>

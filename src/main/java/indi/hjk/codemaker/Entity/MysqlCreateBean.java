@@ -64,6 +64,8 @@ public class MysqlCreateBean implements BaseCreateBean {
         CommParseUtil.ParseContent(0,DataMap,"ControllerTemplateForJOOQ.ftl",DataMap.get("CP_controller").toString());
         //7.生成CURD页面
         CommParseUtil.ParseContent(1,DataMap,"listForJOOQ.ftl",DataMap.get("CP_listviewJOOQ").toString());
+        CommParseUtil.ParseContent(1,DataMap,"listLayuiForJOOQ.ftl",DataMap.get("CP_listviewLayuiJOOQ").toString());
+        CommParseUtil.ParseContent(1,DataMap,"addForJOOQ.ftl",DataMap.get("CP_addviewJOOQ").toString());
         //endregion
 
         System.out.println("Mysql制造代码完毕");
@@ -128,7 +130,9 @@ public class MysqlCreateBean implements BaseCreateBean {
         //页面生成路径
         DataMap.put("CP_listview","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"list.jsp");
         DataMap.put("CP_listviewJOOQ","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"list.ftl");
+        DataMap.put("CP_listviewLayuiJOOQ","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"list1.ftl");
         DataMap.put("CP_addview","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"add.jsp");
+        DataMap.put("CP_addviewJOOQ","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"add.ftl");
         DataMap.put("CP_view","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"view.jsp");
         DataMap.put("CP_editview","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"edit.jsp");
 

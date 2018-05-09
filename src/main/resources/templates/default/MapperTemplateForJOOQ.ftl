@@ -178,6 +178,44 @@ public class ${entityName}Repository {
 </#list>
 		return map;
 	}
+
+	/**
+	 * 获取排序字段
+	 * @param tLotForm 默认排序字段
+	 * @param moreOrderField 更多排序条件(非主表请使用此属性)
+	 * @return
+	 */
+	private List<OrderField<?>> getSordFieldList(${entityExtendName} ${entityLowerName}, OrderField<?>... moreOrderField){
+
+		List<OrderField<?>> orderFieldList=Lists.newArrayList();
+
+		//默认排序字段
+		if(!Strings.isNullOrEmpty(${entityLowerName}.getSidx())){
+			Boolean isInnerField = ${tableName?upper_case}.fieldStream().anyMatch(field -> field.getName().equals(${entityLowerName}.getSidx()));
+			if(isInnerField){
+				if (Constants.ORDERBY_ASC.equalsIgnoreCase(${entityLowerName}.getSord())){
+					orderFieldList.add(${tableName?upper_case}.field(${entityLowerName}.getSidx()).asc());
+				}else {
+					orderFieldList.add(${tableName?upper_case}.field(${entityLowerName}.getSidx()).desc());
+				}
+			}else {
+				if (Constants.ORDERBY_ASC.equalsIgnoreCase(${entityLowerName}.getSord())){
+					orderFieldList.add(field(${entityLowerName}.getSidx()).asc());
+				}else {
+					orderFieldList.add(field(${entityLowerName}.getSidx()).desc());
+				}
+			}
+
+		}else {
+			orderFieldList.add(${tableName?upper_case}.CREATEDTIME.desc());
+		}
+		//更多排序条件
+		if(moreOrderField.length>0){
+			Collections.addAll(orderFieldList, moreOrderField);
+		}
+
+		return orderFieldList;
+	}
 	//endregion
 
 	//region 自定义方法写这里
