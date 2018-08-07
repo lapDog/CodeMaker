@@ -23,6 +23,7 @@
 		<trim  suffixOverrides=",">
 	<#list ColumnsList as item>
 		<#assign DateTypeList = ["DATETIME", "DATE", "TIMESTAMP"]/>
+		<#assign IntegerTypeList = ["INTEGER", "INT", "Integer"]/>
 		<#if DateTypeList?seq_contains("${item.jdbctype}")>
             <if test="${item.colname}_start != null and ${item.colname}_start != ''">
                 <![CDATA[ and ${item.colname} >= <#noparse>#{</#noparse>${item.colname}_start}  ]]>
@@ -30,6 +31,10 @@
 			<if test="${item.colname}_end != null and ${item.colname}_end != ''">
             	<![CDATA[ and ${item.colname} <= <#noparse>#{</#noparse>${item.colname}_end}  ]]>
         	</if>
+		<#elseif IntegerTypeList?seq_contains("${item.jdbctype}")>
+			<if test="${item.colname} != null">
+                and ${item.colname} = <#noparse>#{</#noparse>${item.colname}}
+            </if>
 		<#else>
             <if test="${item.colname} != null and ${item.colname} != ''">
                 and ${item.colname} = <#noparse>#{</#noparse>${item.colname}}

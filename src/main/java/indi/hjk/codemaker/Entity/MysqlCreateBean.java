@@ -33,9 +33,8 @@ public class MysqlCreateBean implements BaseCreateBean {
         getColumnDatas();
         //初始化数据集
         initDataMap();
-
         //region MVC for Mybatis
-      /*  //3.生成实体类
+        //3.生成实体类
         CommParseUtil.ParseContent(0,DataMap,"EntityTemplate.ftl",DataMap.get("CP_bean").toString());
         //4.生成DAO层(dao接口/mapper文件)
         CommParseUtil.ParseContent(0,DataMap,"DaoTemplate.ftl",DataMap.get("CP_dao").toString());
@@ -46,12 +45,11 @@ public class MysqlCreateBean implements BaseCreateBean {
         //6.生成Controller层
         CommParseUtil.ParseContent(0,DataMap,"ControllerTemplate.ftl",DataMap.get("CP_controller").toString());
         //7.生成CURD页面
-        CommParseUtil.ParseContent(1,DataMap,"list.ftl",DataMap.get("CP_listview").toString());
+        /*CommParseUtil.ParseContent(1,DataMap,"list.ftl",DataMap.get("CP_listview").toString());
         CommParseUtil.ParseContent(1,DataMap,"add.ftl",DataMap.get("CP_addview").toString());
         CommParseUtil.ParseContent(1,DataMap,"edit.ftl",DataMap.get("CP_editview").toString());
         CommParseUtil.ParseContent(1,DataMap,"view.ftl",DataMap.get("CP_view").toString());*/
         //endregion
-
         //region MVC for JOOQ
         //实体类
         CommParseUtil.ParseContent(0,DataMap,"EntityTemplateForJOOQ.ftl",DataMap.get("CP_beanJOOQ").toString());
@@ -67,6 +65,9 @@ public class MysqlCreateBean implements BaseCreateBean {
         CommParseUtil.ParseContent(1,DataMap,"listLayuiForJOOQ.ftl",DataMap.get("CP_listviewLayuiJOOQ").toString());
         CommParseUtil.ParseContent(1,DataMap,"addForJOOQ.ftl",DataMap.get("CP_addviewJOOQ").toString());
         //endregion
+
+        //生成RestController For JOOQ
+        CommParseUtil.ParseContent(0,DataMap,"RestControllerTemplateForJOOQ.ftl",DataMap.get("CP_RestController").toString());
 
         System.out.println("Mysql制造代码完毕");
     }
@@ -137,6 +138,9 @@ public class MysqlCreateBean implements BaseCreateBean {
         DataMap.put("CP_editview","views\\"+CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME.toLowerCase()+"\\"+"edit.jsp");
 
         DataMap.put("CP_Repository","repository\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Repository.java");
+
+        DataMap.put("CP_RestController","restController\\" + CodeResourceUtil.PROJECT_NAME+"\\"+CodeResourceUtil.ENTITY_NAME+"Controller.java");
+
     }
 
 }

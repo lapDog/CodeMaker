@@ -11,12 +11,12 @@ import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ${teamPackagePath}.${projectName}.${entityPackagePath}.${entityName};
 
 /**
 * ${entityName} Repository with JOOQ
 * Created by CoderMaker on ${createdTime}.
 */
-@Repository
 public class ${entityName}Repository {
 
 	<#noparse>
@@ -31,12 +31,12 @@ public class ${entityName}Repository {
 	 * @param ${entityLowerName}
      * @return Data mapping entity list
 	 */
-	public List<${entityExtendName}> query${entityName}ListByCondition(${entityExtendName} ${entityLowerName}){
+	public List<${entityName}> query${entityName}ListByCondition(${entityName} ${entityLowerName}){
 		return create.select(getBaseColumnList()).from(${tableName?upper_case})
 				.where(queryCondition(${entityLowerName}))
 				.limit(${entityLowerName}.getRows())
 				.offset(${entityLowerName}.getStartIndex())
-				.fetchInto(${entityExtendName}.class);
+				.fetchInto(${entityName}.class);
 	}
 
 	/**
@@ -45,10 +45,10 @@ public class ${entityName}Repository {
      * @param ${entityLowerName}
      * @return Data mapping entity list
 	 */
-	public List<${entityExtendName}> query${entityName}ListByConditionNoPage(${entityExtendName} ${entityLowerName}){
+	public List<${entityName}> query${entityName}ListByConditionNoPage(${entityName} ${entityLowerName}){
 		return create.select(getBaseColumnList()).from(${tableName?upper_case})
 				.where(queryCondition(${entityLowerName}))
-				.fetchInto(${entityExtendName}.class);
+				.fetchInto(${entityName}.class);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class ${entityName}Repository {
      * @param ${entityLowerName}
      * @return Total Data
 	 */
-	public Integer query${entityName}NumByCondition(${entityExtendName} ${entityLowerName}){
+	public Integer query${entityName}NumByCondition(${entityName} ${entityLowerName}){
 		return create.fetchCount(${tableName?upper_case},queryCondition(${entityLowerName}));
 	}
 
@@ -66,21 +66,13 @@ public class ${entityName}Repository {
 	 * Add data based on entity class attributes.
 	 * @param ${entityLowerName}
 	 */
-	public void add${entityName}(${entityExtendName} ${entityLowerName}){
+	public void add${entityName}(${entityName} ${entityLowerName}){
 		create.insertInto(${tableName?upper_case}).columns(getBaseColumnList())
                 .values(
 				<#list ColumnsList as item>
 					<#if item.nullable == 'NO'>defaultValue(${tableName?upper_case}.${item.colname?upper_case})<#else>${entityLowerName}.get${item.colname?cap_first}()</#if><#sep>,</#sep>
 				</#list>
 				).execute();
-	}
-
-	/**
-	 * 根据实体类属性进行数据添加(跳过空字段)
-	 * @param ${entityLowerName}
-	 */
-	public void add${entityName}SkipEmpty (${entityExtendName} ${entityLowerName}){
-		create.insertInto(${tableName?upper_case}).set(setValueEmptyClause(${entityLowerName})).execute();
 	}
 
 	/**
@@ -98,9 +90,9 @@ public class ${entityName}Repository {
 	 * @param id  PrimaryKey
 	 * @return Data mapping entity
 	 */
-	public ${entityExtendName} get${entityName}(Integer id){
+	public ${entityName} get${entityName}(Integer id){
 		return create.select(getBaseColumnList()).from(${tableName?upper_case})
-                .where(${tableName?upper_case}.ID.eq(id)).fetchOneInto(${entityExtendName}.class);
+                .where(${tableName?upper_case}.ID.eq(id)).fetchOneInto(${entityName}.class);
 	}
 
 	/**
@@ -108,8 +100,8 @@ public class ${entityName}Repository {
 	 * Modify data based on entity class attributes.
 	 * @param ${entityLowerName}
 	 */
-	public void edit${entityName}(${entityExtendName} ${entityLowerName}){
-		 create.update(${tableName?upper_case}).set(setValueEmptyClause(${entityLowerName})).where(${tableName?upper_case}.ID.eq(${entityLowerName}.getId())).execute();
+	public void edit${entityName}(${entityName} ${entityLowerName}){
+		 create.update(${tableName?upper_case}).set(setValueEmptyClause(${entityLowerName})).execute();
 	}
 
 	/**
@@ -117,8 +109,8 @@ public class ${entityName}Repository {
 	 * Querying all data.
 	 * @return Data mapping entity list
 	 */
-	public List<${entityExtendName}> queryAll${entityName}(){
-		return create.select(getBaseColumnList()).from(${tableName?upper_case}).fetchInto(${entityExtendName}.class);
+	public List<${entityName}> queryAll${entityName}(){
+		return create.select(getBaseColumnList()).from(${tableName?upper_case}).fetchInto(${entityName}.class);
 	}
 	//endregion
 
@@ -143,10 +135,10 @@ public class ${entityName}Repository {
      * @param ${entityLowerName}
      * @return
      */
-    private Condition queryCondition(${entityExtendName} ${entityLowerName}){
+    private Condition queryCondition(${entityName} ${entityLowerName}){
         Condition condition = DSL.trueCondition(); //equals where 1=1
 <#list ColumnsList as item>
-	<#if item.javatype == 'Timestamp'||item.javatype == 'Date'>
+	<#if item.javatype == 'Timestamp'>
 		if(!Strings.isNullOrEmpty(${entityLowerName}.get${item.colname?cap_first}_start())){
 			condition = condition.and(${tableName?upper_case}.${item.colname?upper_case}.ge(Timestamp.valueOf(${entityLowerName}.get${item.colname?cap_first}_start())));
 		}
@@ -171,7 +163,7 @@ public class ${entityName}Repository {
      * @param ${entityLowerName}
      * @return
      */
-    private Map<Field<?>,Object> setValueEmptyClause(${entityExtendName} ${entityLowerName}){
+    private Map<Field<?>,Object> setValueEmptyClause(${entityName} ${entityLowerName}){
         Map<Field<?>,Object> map= Maps.newHashMap();
 <#list ColumnsList as item>
 	<#if item.javatype == 'String'>
@@ -185,44 +177,6 @@ public class ${entityName}Repository {
 	</#if>
 </#list>
 		return map;
-	}
-
-	/**
-	 * 获取排序字段
-	 * @param ${entityLowerName} 默认排序字段
-	 * @param moreOrderField 更多排序条件(非主表请使用此属性)
-	 * @return
-	 */
-	private List<OrderField<?>> getSordFieldList(${entityExtendName} ${entityLowerName}, OrderField<?>... moreOrderField){
-
-		List<OrderField<?>> orderFieldList=Lists.newArrayList();
-
-		//默认排序字段
-		if(!Strings.isNullOrEmpty(${entityLowerName}.getSidx())){
-			Boolean isInnerField = ${tableName?upper_case}.fieldStream().anyMatch(field -> field.getName().equals(${entityLowerName}.getSidx()));
-			if(isInnerField){
-				if (Constants.ORDERBY_ASC.equalsIgnoreCase(${entityLowerName}.getSord())){
-					orderFieldList.add(${tableName?upper_case}.field(${entityLowerName}.getSidx()).asc());
-				}else {
-					orderFieldList.add(${tableName?upper_case}.field(${entityLowerName}.getSidx()).desc());
-				}
-			}else {
-				if (Constants.ORDERBY_ASC.equalsIgnoreCase(${entityLowerName}.getSord())){
-					orderFieldList.add(field(${entityLowerName}.getSidx()).asc());
-				}else {
-					orderFieldList.add(field(${entityLowerName}.getSidx()).desc());
-				}
-			}
-
-		}else {
-			orderFieldList.add(${tableName?upper_case}.CREATEDTIME.desc());
-		}
-		//更多排序条件
-		if(moreOrderField.length>0){
-			Collections.addAll(orderFieldList, moreOrderField);
-		}
-
-		return orderFieldList;
 	}
 	//endregion
 

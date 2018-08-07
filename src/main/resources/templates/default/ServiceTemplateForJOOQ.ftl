@@ -39,6 +39,13 @@ public interface ${entityName}Service {
 	void add${entityName}(${entityExtendName} ${entityLowerName});
 
 	/**
+      * 根据实体类属性进行数据添加(跳过空字段)
+	  * Add data based on entity class attributes.
+	  * @param ${entityLowerName}
+	  */
+	void add${entityName}SkipEmpty(${entityExtendName} ${entityLowerName});
+
+	/**
 	  * 根据主键删除数据
 	  * Delete data according to the primary key.
 	  * @param id  PrimaryKey

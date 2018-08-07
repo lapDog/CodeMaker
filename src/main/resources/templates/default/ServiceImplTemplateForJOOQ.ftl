@@ -58,6 +58,16 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
 	}
 
 	/**
+	  * 根据实体类属性进行数据添加
+	  * Add data based on entity class attributes.
+	  * @param ${entityLowerName}
+	  */
+	@Transactional
+	public void add${entityName}SkipEmpty(${entityExtendName} ${entityLowerName}) {
+		${entityLowerName}Mapper.add${entityName}SkipEmpty(${entityLowerName});
+	}
+
+	/**
 	  * 根据主键删除数据
 	  * Delete data according to the primary key.
 	  * @param id  PrimaryKey
